@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: 'Pacifico',
     color: 'white',
-    fontSize: 26
+    fontSize: 20,
+    textAlign: 'auto'
   }
 });

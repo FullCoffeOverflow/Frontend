@@ -3,33 +3,38 @@ import { Font } from 'expo';
 import { ToolbarAndroid, Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
 
 import { TopBar } from './TopBar'
+import bigodeImage from './images/bigode.png'
 
 export class CadastroBarbeiroScreen extends Component {
   render() {
     return (
       <React.Fragment>
-        <TopBar title="Cadastro como Barbeiro"/>
 
         <View style={styles.container}>
+
+          <View style={styles.logoContainer}>
+            <Image source={bigodeImage} style={{width: 193, height: 110}}/>
+          </View>
+
           <View style={styles.loginForm}>
             <View style={styles.loginFormItem}>
-              <Text>Email:</Text>
+              
               <TextInput style={styles.formInput} placeholder={'Email'} />
             </View>
             <View style={styles.loginFormItem}>
-              <Text>Senha:</Text>
+              
               <TextInput secureTextEntry={true} style={styles.formInput} placeholder={'Senha'} />
             </View>
             <View style={styles.loginFormItem}>
-              <Text>Confirmar Senha:</Text>
-              <TextInput secureTextEntry={true} style={styles.formInput} placeholder={'Senha'} />
+              
+              <TextInput secureTextEntry={true} style={styles.formInput} placeholder={'Confirmar Senha'} />
             </View>
             <View style={styles.loginFormItem}>
-              <Text>CEP:</Text>
+              
               <TextInput style={styles.formInput} placeholder={'CEP'} />
             </View>
             <View style={styles.loginFormItem}>
-              <Text>Telefone:</Text>
+              
               <TextInput style={styles.formInput} placeholder={'Telefone'} />
             </View>
             <View style={styles.loginFormItem}>

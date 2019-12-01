@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Font } from 'expo';
 import { ToolbarAndroid, Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import bigodeImage from './images/bigode.png'
 
 import { TopBar } from './TopBar'
 
@@ -8,9 +9,14 @@ export class NovoCadastroScreen extends Component {
   render() {
     return (
       <React.Fragment>
-        <TopBar title="Cadastro"/>
+        <TopBar title="Novo Cadastro"/>
 
         <View style={styles.container}>
+
+          <View style={styles.logoContainer}>
+            <Image source={bigodeImage} style={{width: 193, height: 110}}/>
+          </View>
+
           <View style={styles.loginFormItem}>
           <TouchableOpacity style={styles.btn}>
             <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Cadastrar-se como cliente</Text>

@@ -13,12 +13,12 @@ export class LoginScreen extends Component {
         </View>
 
         <View style={styles.loginForm}>
+
           <View style={styles.loginFormItem}>
-            <Text>Email:</Text>
             <TextInput style={styles.formInput} placeholder={'Email'} />
           </View>
+          
           <View style={styles.loginFormItem}>
-            <Text>Senha:</Text>
             <TextInput secureTextEntry={true} style={styles.formInput} placeholder={'Senha'} />
           </View>
           <View style={styles.loginFormItem}>
