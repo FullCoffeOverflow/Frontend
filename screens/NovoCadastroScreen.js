@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Font } from 'expo';
 import { ToolbarAndroid, Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
 import bigodeImage from './images/bigode.png'
+import {Header} from 'react-native-elements';
 
 import { TopBar } from './TopBar'
 
@@ -9,7 +10,14 @@ export class NovoCadastroScreen extends Component {
   render() {
     return (
       <React.Fragment>
-        <TopBar title="Novo Cadastro"/>
+        <Header
+        centerComponent={{ text: 'Novo Cadastro', style: { color: 'white' } }}
+        leftComponent={{ icon: 'home', color: '#fff' }}
+        containerStyle={{
+          backgroundColor: '#531919',
+          justifyContent: 'space-around',
+        }}
+        />
 
         <View style={styles.container}>
 
