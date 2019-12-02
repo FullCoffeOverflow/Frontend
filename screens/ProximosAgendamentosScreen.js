@@ -1,23 +1,88 @@
 import React, { Component } from 'react';
 import { Font } from 'expo';
-import { ToolbarAndroid, Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
-import {Header, Button, ThemeProvider } from 'react-native-elements';
+import { ToolbarAndroid, Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import {Header} from 'react-native-elements';
+import { ListItem } from 'react-native-elements'
 
-import { TopBar } from './TopBar'
-import bigodeImage from './images/bigode.png'
+const listAgendamentos = [
+  {
+    name: 'Amy Farha',
+    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+  },
+  {
+    name: 'Chris Jackson',
+    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+  },
+]
+
+const listCortes = [
+  {
+    name: 'Amy Farha',
+    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
+  },
+  {
+    name: 'Chris Jackson',
+    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
+  },
+]
 
 export class ProximosAgendamentosScreen extends Component {
+  keyExtractor = (item, index) => index.toString()
+
+  renderItem = ({ item }) => (
+    <ListItem
+      title={item.name}
+      subtitle={item.subtitle}
+      leftAvatar={{
+        source: item.avatar_url && { uri: item.avatar_url },
+        title: item.name[0]
+      }}
+      bottomDivider
+      chevron
+    />
+  )
 
   render() {
-    return (
-      <Header
-      rightComponent={{ icon: 'menu', color: '#fff' }}
-      centerComponent={{ text: 'Próximos Agendamentos', style: { color: 'white' } }}
-      containerStyle={{
-        backgroundColor: '#531919',
-        justifyContent: 'space-around',
-      }}
+    return (      
+    <React.Fragment>
+
+
+
+        <Header
+        centerComponent={{ text: 'El Bigodón', style: { color: 'white' } }}
+        rightComponent={{ icon: 'menu', color: '#fff' }}
+        containerStyle={{
+          backgroundColor: '#531919',
+          justifyContent: 'space-around',
+        }}
+        />
+
+
+      <Text style={{color: 'black', fontWeight: '100', textAlign: 'center'}} h2>Pŕoximos agendamentos</Text>
+
+      <FlatList
+      keyExtractor={this.keyExtractor}
+      data={listAgendamentos}
+      renderItem={this.renderItem}
       />
+
+      <View style={styles.loginFormItem}>
+          <TouchableOpacity style={styles.btn}>
+            <Text style={{color: 'white', fontWeight: '200', textAlign: 'center'}}>Novo agendamento</Text>
+          </TouchableOpacity>
+      </View>
+
+      <Text style={{color: 'black', fontWeight: '100', textAlign: 'center'}} h2>Histórico de Cortes</Text>
+
+
+      <FlatList
+      keyExtractor={this.keyExtractor}
+      data={listCortes}
+      renderItem={this.renderItem}
+      />
+
+
+      </React.Fragment>
     );
   }
 }
