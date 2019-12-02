@@ -9,6 +9,7 @@ import bigodeImage from './images/bigode.png'
 
 export class LoginScreen extends Component {
   constructor(props) {
+    global.token = ''
     super(props);
         this.state = {
           isLoading: false,
@@ -61,12 +62,16 @@ export class LoginScreen extends Component {
     return fetch('https://fullcoffeeoverflow.herokuapp.com/v01/auth/login', data)
             .then((response) => {
               if(response.ok) {
-                response.text().then((responseJson) => {
+                response.json().then((responseJson) => {
                   this.setState({
                       isLoading: false,
                       data: responseJson.data,
                   });
-                  console.log(JSON.stringify(responseJson));
+                  global.token = responseJson.token
+                  global.usuarioId = responseJson.usuarioId
+                  console.log(global.usuarioId)
+                  const {navigate} = this.props.navigation;
+                  navigate('Home', {})
                 })
               }
             })
