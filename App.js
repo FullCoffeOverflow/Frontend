@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
 import { ActivityIndicator } from 'react-native';
+
+import { createAppContainer } from 'react-navigation';
+import { createStackNavigator } from 'react-navigation-stack';
+
 import * as Font from 'expo-font';
 
 import { LoginScreen } from "./screens/LoginScreen"
@@ -7,32 +11,16 @@ import { NovoCadastroScreen } from "./screens/NovoCadastroScreen"
 import { CadastroBarbeiroScreen } from "./screens/CadastroBarbeiroScreen"
 import { CadastroClienteScreen } from "./screens/CadastroClienteScreen"
 
-export default class App extends Component {
-  constructor() {
-    super()
-    this.state = {
-      fontLoaded: false
-    }
-  }
+const MainNavigator = createStackNavigator({
+  Login: {screen: LoginScreen},
+  NovoCadastro: {screen: NovoCadastroScreen},
+  CadastroBarbeiro: {screen: CadastroBarbeiroScreen},
+  CadastroCliente: {screen: CadastroClienteScreen}
+});
 
-  async componentDidMount() {
-    await Font.loadAsync({
-      'Pacifico':require('./assets/fonts/Pacifico.ttf')
-    });
+const App = createAppContainer(MainNavigator);
 
-    this.setState({ fontLoaded: true });
-  }
 
-  render() {
-    if(this.state.fontLoaded) {
-      return (
-        <CadastroBarbeiroScreen />
-      );
-    }
-    else {
-      return (
-        <ActivityIndicator size="large" /> 
-      );
-    }
-  }
-}
+export default App;
+
+

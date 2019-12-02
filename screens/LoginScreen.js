@@ -1,11 +1,84 @@
 import React, { Component } from 'react';
 import { Font } from 'expo';
-import { Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity} from 'react-native';
+import { Platform, StyleSheet, Text, View, Image, TextInput, TouchableOpacity, ActivityIndicator} from 'react-native';
+
+import {createAppContainer} from 'react-navigation';
+import {createStackNavigator} from 'react-navigation-stack';
 
 import bigodeImage from './images/bigode.png'
 
 export class LoginScreen extends Component {
+  constructor(props) {
+    super(props);
+        this.state = {
+          isLoading: false,
+          email: '',
+          password: ''
+        }
+  }
+
+  static navigationOptions = {
+    title: 'Login',
+    headerStyle: {
+      backgroundColor: '#531919',
+    },
+    headerTintColor: '#fff'
+  };
+
+  renderButton() {
+    if (this.state.isLoading) {
+        return (
+            <View style={styles.spinnerStyle}>
+                <ActivityIndicator size={"large"} />
+            </View>
+        );
+    }
+
+    return (
+      <TouchableOpacity style={styles.btn} onPress={() => this.loginCliente()}>
+        <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Logar como cliente</Text>
+      </TouchableOpacity>
+    );
+  }
+
+  loginCliente() {
+    let data = {
+        method: 'POST',
+        body: JSON.stringify({
+            email: this.state.email,
+            password: this.state.password
+        }),
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+        }
+    }
+
+    this.setState({
+      isLoading: true
+    })
+
+    return fetch('https://fullcoffeeoverflow.herokuapp.com/v01/auth/login', data)
+            .then((response) => {
+              if(response.ok) {
+                response.text().then((responseJson) => {
+                  this.setState({
+                      isLoading: false,
+                      data: responseJson.data,
+                  });
+                  console.log(JSON.stringify(responseJson));
+                })
+              }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+  }
+
+
+
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <View style={styles.container}>
         <View style={styles.logoContainer}>
@@ -15,16 +88,18 @@ export class LoginScreen extends Component {
         <View style={styles.loginForm}>
 
           <View style={styles.loginFormItem}>
-            <TextInput style={styles.formInput} placeholder={'Email'} />
+            <TextInput style={styles.formInput} placeholder={'Email'} 
+                       onChangeText={(text) => this.setState({ email: text })}
+                       value={this.state.email}/>
           </View>
           
           <View style={styles.loginFormItem}>
-            <TextInput secureTextEntry={true} style={styles.formInput} placeholder={'Senha'} />
+            <TextInput secureTextEntry={true} style={styles.formInput} placeholder={'Senha'}
+                       onChangeText={(text) => this.setState({ password: text })}
+                       value={this.state.password} />
           </View>
           <View style={styles.loginFormItem}>
-            <TouchableOpacity style={styles.btn}>
-              <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Logar como cliente</Text>
-            </TouchableOpacity>
+            {this.renderButton()}
           </View>
           <View style={styles.loginFormItem}>
             <TouchableOpacity style={styles.btn}>
@@ -32,7 +107,9 @@ export class LoginScreen extends Component {
             </TouchableOpacity>
           </View>
           <View style={styles.loginFormItem}>
-            <Text style={{color: '#00B2FF', textAlign: 'center'}}>Não possui uma conta? Registre-se agora</Text>
+            <TouchableOpacity onPress={() => navigate('NovoCadastro', {})}>
+              <Text style={{color: '#00B2FF', textAlign: 'center'}}>Não possui uma conta? Registre-se agora</Text>
+            </TouchableOpacity>
           </View>
         </View>
       </View>

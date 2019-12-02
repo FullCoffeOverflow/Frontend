@@ -7,17 +7,18 @@ import {Header} from 'react-native-elements';
 import { TopBar } from './TopBar'
 
 export class NovoCadastroScreen extends Component {
+  static navigationOptions = {
+    title: 'Novo Cadastro',
+    headerStyle: {
+      backgroundColor: '#531919',
+    },
+    headerTintColor: '#fff'
+  };
+
   render() {
+    const {navigate} = this.props.navigation;
     return (
       <React.Fragment>
-        <Header
-        centerComponent={{ text: 'Novo Cadastro', style: { color: 'white' } }}
-        leftComponent={{ icon: 'home', color: '#fff' }}
-        containerStyle={{
-          backgroundColor: '#531919',
-          justifyContent: 'space-around',
-        }}
-        />
 
         <View style={styles.container}>
 
@@ -26,12 +27,12 @@ export class NovoCadastroScreen extends Component {
           </View>
 
           <View style={styles.loginFormItem}>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() => navigate('CadastroCliente', {})}>
             <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Cadastrar-se como cliente</Text>
           </TouchableOpacity>
           </View>
           <View style={styles.loginFormItem}>
-            <TouchableOpacity style={styles.btn}>
+            <TouchableOpacity style={styles.btn} onPress={() => navigate('CadastroBarbeiro', {})}>
               <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Cadastrar-se como barbeiro</Text>
             </TouchableOpacity>
           </View>
