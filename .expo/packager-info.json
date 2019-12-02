@@ -2,8 +2,9 @@
   "devToolsPort": 19002,
   "expoServerPort": 19000,
   "packagerPort": 19001,
-  "packagerPid": 15739,
+  "packagerPid": 71867,
   "expoServerNgrokUrl": "https://s8-pcx.anonymous.elbigodon.exp.direct",
   "packagerNgrokUrl": "https://packager.s8-pcx.anonymous.elbigodon.exp.direct",
-  "ngrokPid": 15766
+  "ngrokPid": 71940,
+  "webpackServerPort": 19006
 }

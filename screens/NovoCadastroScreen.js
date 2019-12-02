@@ -17,6 +17,9 @@ export class NovoCadastroScreen extends Component {
 
   render() {
     const {navigate} = this.props.navigation;
+    if(global.token == '') {
+      navigate('Login', {})
+    }
     return (
       <React.Fragment>
 

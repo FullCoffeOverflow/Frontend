@@ -7,6 +7,7 @@ import { LoginScreen } from "./screens/LoginScreen"
 import { NovoCadastroScreen } from "./screens/NovoCadastroScreen"
 import { CadastroBarbeiroScreen } from "./screens/CadastroBarbeiroScreen"
 import { CadastroClienteScreen } from "./screens/CadastroClienteScreen"
+import { ProximosAgendamentosScreen } from "./screens/ProximosAgendamentosScreen"
 
 export default class App extends Component {
   constructor() {
@@ -27,7 +28,7 @@ export default class App extends Component {
   render() {
     if(this.state.fontLoaded) {
       return (
-        <CadastroBarbeiroScreen />
+        <ProximosAgendamentosScreen />
       );
     }
     else {

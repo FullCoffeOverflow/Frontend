@@ -8,33 +8,33 @@ import { ListItem } from 'react-native-elements'
 
 
 export class AgendarHorarioScreen extends Component {
-    keyExtractor = (item, index) => index.toString()
+  keyExtractor = (item, index) => index.toString()
 
-    
+  static navigationOptions = {
+    title: 'Agendar horário',
+    headerStyle: {
+      backgroundColor: '#531919',
+    },
+    headerTintColor: '#fff'
+  };
     
   render() {
+    const { navigation } = this.props;
+    const {navigate} = this.props.navigation;
     return (
     <React.Fragment>
-        <Header
-        centerComponent={{ text: 'Agendar Horário', style: { color: 'white' } }}
-        leftComponent={{ icon: 'home', color: '#fff' }}
-        rightComponent={{ icon: 'menu', color: '#fff' }}
-        containerStyle={{
-          backgroundColor: '#531919',
-          justifyContent: 'space-around',
-        }}
-        />
-    <Text style={{color: 'black', fontWeight: '300', textAlign: 'left'}} h2>NOME:</Text>
-    <Text style={{color: 'black', fontWeight: '300', textAlign: 'left'}} h2>RANK:</Text>
+    <View style={styles.container}>
+    <Text style={{color: 'black', fontSize: 26, fontWeight: '300', textAlign: 'center'}} h2>{navigation.getParam('barberName', '')}</Text>
     <View style={styles.loginFormItem}>
         <TouchableOpacity style={styles.btn}>
-            <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'right'}}>Galeria</Text>
+            <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Galeria</Text>
         </TouchableOpacity>
     </View>
     <View style={styles.loginFormItem}>
         <TouchableOpacity style={styles.btn}>
-            <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'left'}}>Localização</Text>
+            <Text style={{color: 'white', fontWeight: 'bold', textAlign: 'center'}}>Novo Agendamento</Text>
         </TouchableOpacity>
+    </View>
     </View>
         
     </React.Fragment>

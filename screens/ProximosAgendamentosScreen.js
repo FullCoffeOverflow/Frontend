@@ -4,70 +4,128 @@ import { ToolbarAndroid, Platform, StyleSheet, Text, View, Image, TextInput, Tou
 import {Header} from 'react-native-elements';
 import { ListItem } from 'react-native-elements'
 
-const listAgendamentos = [
-  {
-    name: 'Amy Farha',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-  },
-  {
-    name: 'Chris Jackson',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-  },
-]
-
-const listCortes = [
-  {
-    name: 'Amy Farha',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-  },
-  {
-    name: 'Chris Jackson',
-    avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-  },
-]
+let histCortes = []
+let proxCortes = []
 
 export class ProximosAgendamentosScreen extends Component {
+
+  static navigationOptions = {
+    title: 'Próximos agendamentos',
+    headerStyle: {
+      backgroundColor: '#531919',
+    },
+    headerTintColor: '#fff'
+  };
+
+  constructor(props) {
+    super(props);
+        this.state = {
+          isLoading: false
+        }
+        proxCortes = []
+        histCortes = []
+  }
+
   keyExtractor = (item, index) => index.toString()
 
   renderItem = ({ item }) => (
     <ListItem
       title={item.name}
       subtitle={item.subtitle}
-      leftAvatar={{
-        source: item.avatar_url && { uri: item.avatar_url },
-        title: item.name[0]
-      }}
       bottomDivider
-      chevron
     />
   )
 
+  componentWillMount() {
+    this.renderMyData();
+  }
+
+  renderMyData(){
+    let data = {
+      method: 'GET',
+      headers: {
+          'auth': global.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      }
+    }
+  
+    this.setState({
+      isLoading: true
+    })
+    
+    console.log(`https://fullcoffeeoverflow.herokuapp.com/v01/cortes/usuario/${global.usuarioId}/status/FINALIZADO`)
+    fetch(`https://fullcoffeeoverflow.herokuapp.com/v01/cortes/usuario/${global.usuarioId}/status/FINALIZADO`, data)
+    .then((response) => {
+      if(response.ok) {
+        response.json().then((responseJson) => {
+          console.log(responseJson)
+          for(let i = 0; i < responseJson.cortes.length; i++) {
+            let element = {
+              'name': responseJson.cortes[i].barbeiroName,
+              'subtitle': responseJson.cortes[i].horarioFormatado
+            }
+            histCortes.push(element)
+          }
+          console.log(histCortes)
+          this.setState({
+              isLoading: false
+          });
+        })
+      }
+      else {
+        console.log(response)
+      }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+
+    console.log(`https://fullcoffeeoverflow.herokuapp.com/v01/cortes/usuario/${global.usuarioId}/status/AGUARDANDO`)
+    fetch(`https://fullcoffeeoverflow.herokuapp.com/v01/cortes/usuario/${global.usuarioId}/status/AGUARDANDO`, data)
+    .then((response) => {
+      if(response.ok) {
+        response.json().then((responseJson) => {
+          console.log(responseJson)
+          for(let i = 0; i < responseJson.cortes.length; i++) {
+            let element = {
+              'name': responseJson.cortes[i].barbeiroName,
+              'subtitle': responseJson.cortes[i].horarioFormatado
+            }
+            proxCortes.push(element)
+          }
+          console.log(proxCortes)
+          this.setState({
+              isLoading: false
+          });
+        })
+      }
+      else {
+        console.log(response)
+      }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+  
+  
+  }
+
   render() {
+    const {navigate} = this.props.navigation;
     return (      
     <React.Fragment>
 
-
-
-        <Header
-        centerComponent={{ text: 'El Bigodón', style: { color: 'white' } }}
-        rightComponent={{ icon: 'menu', color: '#fff' }}
-        containerStyle={{
-          backgroundColor: '#531919',
-          justifyContent: 'space-around',
-        }}
-        />
-
-
-      <Text style={{color: 'black', fontWeight: '100', textAlign: 'center'}} h2>Pŕoximos agendamentos</Text>
+      <Text style={{color: 'black', fontWeight: '100', textAlign: 'center'}} h2>Próximos agendamentos</Text>
 
       <FlatList
       keyExtractor={this.keyExtractor}
-      data={listAgendamentos}
+      data={proxCortes}
       renderItem={this.renderItem}
       />
 
       <View style={styles.loginFormItem}>
-          <TouchableOpacity style={styles.btn}>
+          <TouchableOpacity style={styles.btn} onPress={() => navigate('NovoAgendamento', {})}>
             <Text style={{color: 'white', fontWeight: '200', textAlign: 'center'}}>Novo agendamento</Text>
           </TouchableOpacity>
       </View>
@@ -77,7 +135,7 @@ export class ProximosAgendamentosScreen extends Component {
 
       <FlatList
       keyExtractor={this.keyExtractor}
-      data={listCortes}
+      data={histCortes}
       renderItem={this.renderItem}
       />
 

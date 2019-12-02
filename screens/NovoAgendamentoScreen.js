@@ -5,60 +5,103 @@ import {Header} from 'react-native-elements';
 import { ListItem } from 'react-native-elements'
 
 
-
-
-
-const listLugaresProximos = [
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-      subtitle: '1km de distância'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: '2km de distância'
-
-    },
-  ]
+let agendamentos = []
 
 
 export class NovoAgendamentoScreen extends Component {
+  static navigationOptions = {
+    title: 'Novo Agendamento',
+    headerStyle: {
+      backgroundColor: '#531919',
+    },
+    headerTintColor: '#fff'
+  };
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLoading: false
+    }
+    agendamentos = []
+  }
+
     keyExtractor = (item, index) => index.toString()
 
     renderItem = ({ item }) => (
       <ListItem
+        topDivider
         title={item.name}
         subtitle={item.subtitle}
-        leftAvatar={{
-          source: item.avatar_url && { uri: item.avatar_url },
-          title: item.name[0]
-        }}
         bottomDivider
         chevron
+        onPress={() => {const {navigate} = this.props.navigation; navigate('AgendarHorario', {userId: item.userId, barberId: item.barberId, barberName: item.name})}}
       />
     )
+
+
+  componentWillMount() {
+    this.renderMyData();
+  }
+
+  renderMyData(){
+    let data = {
+      method: 'GET',
+      headers: {
+          'auth': global.token,
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+      }
+    }
+  
+    this.setState({
+      isLoading: true
+    })
+    
+    console.log(`https://fullcoffeeoverflow.herokuapp.com/v01/barbeiros/byDistance/${global.usuarioId}`)
+    fetch(`https://fullcoffeeoverflow.herokuapp.com/v01/barbeiros/byDistance/${global.usuarioId}`, data)
+    .then((response) => {
+      if(response.ok) {
+        response.json().then((responseJson) => {
+          console.log(responseJson)
+          for(let i = 0; i < responseJson.length; i++) {
+            distMetros = responseJson[i].distance.text
+            distTime = responseJson[i].duration.text
+            let element = {
+              'name': responseJson[i].barbeiro.name,
+              'subtitle': `${distMetros} (${distTime})`,
+              'userId': global.userId,
+              'barberId': responseJson[i].barbeiro._id, 
+            }
+            agendamentos.push(element)
+          }
+          console.log(agendamentos)
+          this.setState({
+              isLoading: false
+          });
+        })
+      }
+      else {
+        console.log(response)
+      }
+    })
+    .catch((error) => {
+        console.error(error);
+    });
+  }
     
   render() {
+
     return (
     <React.Fragment>
-        <Header
-        centerComponent={{ text: 'Novo Agendamento', style: { color: 'white' } }}
-        leftComponent={{ icon: 'home', color: '#fff' }}
-        rightComponent={{ icon: 'menu', color: '#fff' }}
-        containerStyle={{
-          backgroundColor: '#531919',
-          justifyContent: 'space-around',
-        }}
-        />
+
     <Text style={{color: 'black', fontWeight: '300', textAlign: 'center'}} h2>Barbeiros próximos</Text>
 
     <FlatList
-      keyExtractor={this.keyExtractor}
-      data={listLugaresProximos}
-      renderItem={this.renderItem}
-      />    
-
+    keyExtractor={this.keyExtractor}
+    data={agendamentos}
+    renderItem={this.renderItem}
+    extraData={this.state}
+    />  
     
         
     </React.Fragment>
